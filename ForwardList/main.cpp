@@ -1,0 +1,94 @@
+//ForwardList - односвязный список.
+#include<iostream>
+using std::cin;
+using std::cout;
+using std::endl;
+
+#define tab "\t"
+#define delimiter "\n---------------------------------\n"
+
+class Element
+{
+	int Data;        //Значение элемента. Грубо говоря, что хранится в элементе.
+	Element* pNext; //Указатель на следующий элемент. А с помощью этого указателя, элементы связываются в список.
+public:
+	Element(int Data, Element* pNext = nullptr) :Data(Data), pNext(pNext)
+	{
+		cout << "EConstructor:\t" << this << endl;
+	}
+	~Element()
+	{
+		cout << "EDestructor:\t" << this << endl;
+	}
+	friend class ForwardList;
+};
+class ForwardList
+{
+	Element* Head; //Голова списка - является точкой входа в список.
+public:
+	ForwardList()
+	{
+		//Конструктор по умолчанию создает пустой список.
+		Head = nullptr;
+		//Когда список пуст, его голова указывает на 0.
+		cout << "LConstructor:\t" << this << endl;
+	}
+	~ForwardList()
+	{
+		cout << "LDestructor:\t" << this << endl;
+	}
+
+	//				Adding elements:
+	void push_front(int Data)
+	{
+		//1) Создаём добавляемый элемент:
+		Element* New = new Element(Data);
+		//2) Пристыковать новый элемент к началу списка:
+		New->pNext = Head;
+
+		//3) Смещаем голову на новый элемент:
+		Head = New;
+	}
+	void push_back(int Data)
+	{
+		//1) Создаем новый элемент:
+		Element* New = new Element(Data);
+
+		//2) Доходим до конца списка:
+		Element* Temp = Head;
+		while (Temp->pNext) Temp = Temp->pNext; 
+
+		//3) Добавляем элемент в конец списка:
+		Temp->pNext = New;
+	}
+
+	//				Methods:
+	void print()const
+	{
+		Element* Temp = Head; //Temp - это итератор.
+		//Итератор - это указатель, при помощи которого можно перемещаться по элементам структуры данных.
+		while (Temp)
+		{
+			cout << Temp << tab << Temp->Data << tab << Temp->pNext << endl;
+			Temp = Temp->pNext; //Важно! Переход на след. элемент. выполняется до тех пор, пока не уйдёт в ноль
+		}
+	}
+};
+
+
+void main()
+{
+	setlocale(LC_ALL, "");
+	cout << "Hello ForwardList" << endl;
+
+	int n;
+	cout << "Введите размер списка: "; cin >> n;
+	ForwardList list;
+	for (int i = 0; i < n; i++)
+	{
+		list.push_front(rand() % 100);
+	}
+	list.print();
+	list.push_back(123);
+	list.print();
+}
