@@ -31,6 +31,11 @@ class ForwardList
 	Element* Head; //Голова списка - является точкой входа в список.
 	int size;
 public:
+	int get_size()const
+	{
+		return size;
+	}
+	//						Constructors:
 	ForwardList()
 	{
 		//Конструктор по умолчанию создает пустой список.
@@ -39,9 +44,22 @@ public:
 		size = 0;
 		cout << "LConstructor:\t" << this << endl;
 	}
+	explicit ForwardList(int size):ForwardList()
+	{
+		while (size--)push_front(0);
+		cout << "1argLConstructor:\t" << this << endl;
+	}
 	~ForwardList()
 	{
 		cout << "LDestructor:\t" << this << endl;
+	}
+
+	//				Operators:
+	int& operator[](int Index)
+	{
+		Element* Temp = Head;
+		for (int i = 0; i < Index; i++)Temp = Temp->pNext;
+		return Temp->Data;
 	}
 
 	//				Adding elements:
@@ -193,8 +211,10 @@ void main()
 #endif // SIZE_CHECK
 
 #ifdef HOME_WORK_1
-	ForwardList list(5);
-	for (int i = 0; i < list.get_size(); i++)
+	ForwardList list(5);  //Implicit conversion from 'int' to 'ForwardList'
+						   //Неявное преобразование из 'int' в 'ForwardList'
+	list.print();
+    for (int i = 0; i < list.get_size(); i++)
 	{
 		list[i] = rand() % 100;
 	}
