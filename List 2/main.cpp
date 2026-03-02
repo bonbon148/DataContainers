@@ -1,5 +1,7 @@
 #include<iostream>
-using namespace std;
+using std::cin;
+using std::cout;
+using std::endl;
 
 #define tab			"\t"
 #define delimiter   "\n------------------------------------\n"
@@ -27,11 +29,126 @@ class List
 	// один раз указав тип данных, и перечислив имена объ€вл€емых переменных, через зап€тую.
 	size_t size; //size_t - это typedef на 'unsigned int'.
 public:
+	class Iterator
+	{
+		Element* Temp;
+	public:
+		Iterator(Element* Temp = nullptr) :Temp(Temp) {}
+		~Iterator() {}
+
+		Iterator& operator++()
+		{
+			Temp = Temp->pNext;
+			return *this;
+		}
+		Iterator operator++(int)
+		{
+			Iterator old = *this;
+			Temp = Temp->pNext;
+			return old;
+		}
+		Iterator& operator--()
+		{
+			Temp = Temp->pPrev;
+			return *this;
+		}
+		Iterator operator--(int)
+		{
+			Iterator old = *this;
+			Temp = Temp->pPrev;
+			return old;
+		}
+
+
+		bool operator==(const Iterator& other)const
+		{
+			return this->Temp == other.Temp;
+		}
+		bool operator!=(const Iterator& other)const
+		{
+			return this->Temp != other.Temp;
+		}
+		int operator*()const
+		{
+			return Temp->Data;
+		}
+
+
+	};
+	class ReverseIterator
+	{
+		Element* Temp;
+	public:
+		ReverseIterator(Element* Temp = nullptr) :Temp(Temp) {}
+		~ReverseIterator() {}
+
+		ReverseIterator& operator++()
+		{
+			Temp = Temp->pPrev;
+			return *this;
+		}
+		ReverseIterator operator++(int)
+		{
+			ReverseIterator old = *this;
+			Temp = Temp->pPrev;
+			return old;
+		}
+		ReverseIterator& operator--()
+		{
+			Temp = Temp->pNext;
+			return *this;
+		}
+		ReverseIterator operator--(int)
+		{
+			ReverseIterator old = *this;
+			Temp = Temp->pNext;
+			return old;
+		}
+
+		bool operator==(const ReverseIterator& other)const
+		{
+			return this->Temp == other.Temp;
+		}
+		bool operator!=(const ReverseIterator& other)const
+		{
+			return this->Temp != other.Temp;
+		}
+		int operator*()const
+		{
+			return Temp->Data;
+		}
+	};
+	Iterator begin()
+	{
+		return Head;
+	}
+	Iterator end()
+	{
+		return nullptr;
+	}
+	ReverseIterator rbegin()
+	{
+		return Tail;
+	}
+	ReverseIterator rend()
+	{
+		return nullptr;
+	}
 	List()
 	{
 		Head = Tail = nullptr;
 		size = 0;
 		cout << "LConstructor:\t" << this << endl;
+	}
+	List(const std::initializer_list<int>& il) :List()
+	{
+		//initializer_list - это контейнер.
+		// онтейнер - это объект, который организует хранение других объектов пам€ти.
+		//” любого контейнера есть методы begin() и end();
+		//begin() - возвращает итератор на начало контейнера;
+		//end() - возвращает итератор на конец контейнера;
+		for (int const* it = il.begin(); it != il.end(); ++it)
+			push_back(*it);
 	}
 	~List()
 	{
@@ -161,7 +278,7 @@ public:
 
 };
 
-#define BASE_CHECK
+//#define BASE_CHECK
 
 
 void main()
@@ -193,4 +310,18 @@ void main()
 	list.reverse_print();
 #endif // BASE_CHECK
 
+	List list = { 3,5,8,13,21 };
+	//list.print();
+	for (int i : list)cout << i << tab; cout << endl;
+	for (List::Iterator it = list.begin(); it != list.end(); it++)
+	{
+		cout << *it << tab;
+	}
+	cout << endl;
+
+	for (List::ReverseIterator it = list.rbegin(); it != list.rend(); it++)
+	{
+		cout << *it << tab;
+	}
+	cout << endl;
 }
