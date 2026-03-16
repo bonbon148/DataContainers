@@ -22,28 +22,14 @@ template<typename T>class Element
 	Element<T>* pNext; //Указатель на следующий элемент. А с помощью этого указателя, элементы связываются в список.
 	static int count;
 public:
-	Element(T Data, Element<T>* pNext = nullptr) :Data(Data), pNext(pNext)
-	{
-		count++;
-#ifdef DEBUG
-		cout << "EConstructor:\t" << this << endl;
-#endif // DEBUG
-
-	}
-	~Element()
-	{
-		count--;
-#ifdef DEBUG
-		cout << "EDestructor:\t" << this << endl;
-#endif // DEBUG
-
-	}
+	Element(T Data, Element<T>* pNext = nullptr);
+	~Element();
 	friend class ForwardList<T>;
 	friend class Iterator<T>;
 	friend class ConstIterator<T>;
 	friend ForwardList<T> operator+(const ForwardList<T>& left, const ForwardList<T>& right);
 };
-template<typename T>int Element<T>::count = 0;
+//template<typename T>int Element<T>::count = 0;
 
 template<typename T>
 class Iterator
@@ -120,6 +106,25 @@ public:
 
 /////////////////////////////////////////////////////////////////
 //////////		Class definition (Определение класса)	////////
+
+template<typename T>int Element<T>::count = 0;  //Инициализация стат.переменной так же является определением класса.
+
+template<typename T>Element<T>::Element(T Data, Element<T>* pNext) :Data(Data), pNext(pNext)
+{
+	count++;
+#ifdef DEBUG
+	cout << "EConstructor:\t" << this << endl;
+#endif // DEBUG
+
+}
+template<typename T>Element<T>::~Element()
+{
+	count--;
+#ifdef DEBUG
+	cout << "EDestructor:\t" << this << endl;
+#endif // DEBUG
+
+}
 
 //------------------------------------------------------------//
 //-----------		 Iterator methods			--------------//
