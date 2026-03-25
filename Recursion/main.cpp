@@ -1,6 +1,21 @@
 #include<iostream>
 using namespace std;
 
+class Fibonacci
+{
+	static void Calculate(int n, int a, int b)
+	{
+		if (a > n)return;
+		cout << a << "\t";
+		Calculate(n, b, a + b);
+	}
+public:
+	static void Calculate(int n)
+	{
+		Calculate(n, 0, 1);
+		cout << endl;
+	}
+};
 double Power(double a, int n);
 void Fibonacci(int n, int a = 0, int b = 1);
 
@@ -13,12 +28,22 @@ void main()
 	//cout << "¬ведите показатель степени: "; cin >> n;
 	//cout << Power(a, n) << endl;
 	cout << "¬ведите предел р€да ‘ибоначчи: "; cin >> n;
-	Fibonacci(n, 22, 33);
+	Fibonacci::Calculate(n);
+	//Fibonacci(n, 22, 33);
 	cout << endl;
 
 	main();
 }
 
+//class Fibonacci
+//{
+//	static void Calculate(int n, int a, int b)
+//	{
+//		if (a > n)return;
+//		cout << a << "\t";
+//		Calculate(n, b, a + b);
+//	}
+//};
 
 double Power(double a, int n)
 {
